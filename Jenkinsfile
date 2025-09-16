@@ -2,9 +2,9 @@ pipeline {
     agent any
     environment {
         TEST_RESULT_FILE = 'test_result.txt'
-        REPO_URL = '<your-github-repo-url>'
-        TESTING_SERVER = '<Testing-Server-IP>'
-        PRODUCTION_SERVER = '<Production-Server-IP>'
+        REPO_URL = '<https://github.com/anaclaramoreira/my-team-registration>'
+        TESTING_SERVER = '<98.80.72.55>'
+        PRODUCTION_SERVER = '<54.221.84.176>'
     }
 
 
