@@ -13,7 +13,6 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building Website...'
-                // Add build steps here if needed (npm install, etc.)
             }
         }
         
@@ -21,10 +20,10 @@ pipeline {
             steps {
                 echo 'Deploying to Testing Server...'
                 script {
-                    sshagent(credentials: [env.SSH_CREDENTIAL_ID]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: env.SSH_CREDENTIAL_ID, keyFileVariable: 'SSH_KEY')]) {
                         try {
                             sh """
-                                ssh -o StrictHostKeyChecking=no ec2-user@${TESTING_SERVER} '
+                                ssh -i \$SSH_KEY -o StrictHostKeyChecking=no ec2-user@${TESTING_SERVER} '
                                     sudo rm -rf /var/www/html/*
                                     sudo git clone ${REPO_URL} /tmp/repo-temp
                                     sudo cp -r /tmp/repo-temp/* /var/www/html/
@@ -76,10 +75,10 @@ pipeline {
             steps {
                 echo 'Deploying to Production Server...'
                 script {
-                    sshagent(credentials: [env.SSH_CREDENTIAL_ID]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: env.SSH_CREDENTIAL_ID, keyFileVariable: 'SSH_KEY')]) {
                         try {
                             sh """
-                                ssh -o StrictHostKeyChecking=no ec2-user@${PRODUCTION_SERVER} '
+                                ssh -i \$SSH_KEY -o StrictHostKeyChecking=no ec2-user@${PRODUCTION_SERVER} '
                                     sudo rm -rf /var/www/html/*
                                     sudo git clone ${REPO_URL} /tmp/repo-temp
                                     sudo cp -r /tmp/repo-temp/* /var/www/html/
