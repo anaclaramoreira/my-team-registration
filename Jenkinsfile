@@ -32,6 +32,10 @@ pipeline {
         stage('Run Selenium Tests') {
             steps {
                 echo 'Running Selenium Tests...'
+		 sh '''
+                 cd selenium-tests
+            	 npm install selenium-webdriver chromedriver
+            	 node test_form.js
                 script {
                     try {
                         sh 'node selenium-tests/test_form.js'
